@@ -18,6 +18,7 @@ library AppStorage {
         mapping(uint256 => Word) words;
         mapping(address => User) users;
         mapping(bytes32 => WordHash) wordHashes;
+        mapping(uint256 => Template) templates;
     }
 
 // global -------------------------------------
@@ -65,7 +66,7 @@ library AppStorage {
         address author;
         uint256 blockNumber;
         uint256 randomResult;
-        uint64 template;
+        uint256 template;
     }
 
     struct WordValues{
@@ -94,6 +95,15 @@ library AppStorage {
         mapping(uint256 => uint256) indexToId;
         mapping(uint256 => uint256) idToIndex;
         uint256 wordHashCounter;
+    }
+
+// Template ---------------------------------------------
+    struct Template {
+        address contAddr;
+        address creator;
+        uint256 price;
+        string description;
+        uint[] charCount;
     }
 
 }
