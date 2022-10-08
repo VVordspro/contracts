@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@solidstate/contracts": "^0.0.43",
     "hardhat": "^2.11.2"
   }
 }
