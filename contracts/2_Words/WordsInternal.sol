@@ -71,7 +71,6 @@ abstract contract WordsInternal is PowerInternal {
         string calldata tags,
         string calldata externalURL,
         address author,
-        address userAddr,
         uint256 id,
         uint256 value,
         uint256 power
@@ -98,6 +97,8 @@ abstract contract WordsInternal is PowerInternal {
             w.values.value <= max,
             "WordsInternal: maximum value error."
         );
+
+        address userAddr = msg.sender;
 
         w.word = word;
         w.info.tags = tags;

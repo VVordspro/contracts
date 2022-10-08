@@ -49,27 +49,6 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
         return _nextTokenId();
     }
 
-    // function mintVVord(
-    //     string[] calldata word, 
-    //     string calldata tags,
-    //     string calldata externalURL,
-    //     address to
-    // ) public payable {
-    //     uint256 paidAmount = msg.value;
-
-    //     uint256 tokenId = _tokenIdIncrement();
-
-    //     if(_inviteRequired()){
-    //         require(_balanceOf(msg.sender) != 0, "Words: your not invited to mint.");
-    //     }
-        
-    //     _safeMint(to, tokenId);
-
-    //     _newWord(word, tags, externalURL, msg.sender, to, tokenId, paidAmount);
-
-    //     requestRandomness(tokenId);
-    // }
-
     function mintVVord1155(
         string[] calldata word, 
         string calldata tags,
@@ -80,15 +59,11 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
 
         uint256 tokenId = _tokenIdIncrement();
 
-        // if(_inviteRequired()){
-        //     require(_balanceOf(msg.sender) != 0, "Words: your not invited to mint.");
-        // }
-
         uint256 power = _powerCalculator(paidAmount);
         
         _safeMint(to, tokenId, power, "");
 
-        _newWord(word, tags, externalURL, msg.sender, to, tokenId, paidAmount, power);
+        _newWord(word, tags, externalURL, to, tokenId, paidAmount, power);
 
         requestRandomness(tokenId);
     }
