@@ -11,5 +11,8 @@
   "devDependencies": {
     "@solidstate/contracts": "^0.0.43",
     "hardhat": "^2.11.2"
+  },
+  "dependencies": {
+    "@uniswap/v3-periphery": "^1.4.2"
   }
 }
