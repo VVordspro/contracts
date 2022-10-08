@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.13;
 
-import "../0_diamond/libraries/AppStorage.sol";
-import "../3_power/PowerInternal.sol";
+import "../0_Diamond/libraries/AppStorage.sol";
+import "../3_Power/PowerInternal.sol";
 import "./utils/UTF8HoldingSpace.sol";
 import "./utils/StringUtils.sol";
 import '@solidstate/contracts/utils/UintUtils.sol';

@@ -15,7 +15,7 @@ pragma solidity ^0.8.7;
 
 import "./utils/Swapper.sol";
 import "./VRFInternal.sol";
-import "../0_diamond/libraries/AppStorage.sol";
+import "../0_Diamond/libraries/AppStorage.sol";
 
 contract VRF is VRFInternal, Swapper {
 

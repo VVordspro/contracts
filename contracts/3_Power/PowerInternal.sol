@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.13;
 
-import "../0_diamond/libraries/AppStorage.sol";
+import "../0_Diamond/libraries/AppStorage.sol";
 
 abstract contract PowerInternal {
 

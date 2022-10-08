@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import "../0_diamond/libraries/LibDiamond.sol";
+import "../0_Diamond/libraries/LibDiamond.sol";
 import "../1_ERC1155SolidState/enumerable/ERC1155EnumerableInternal.sol";
 import "./PowerInternal.sol";
-import "../2_words/WordsInternal.sol";
+import "../2_Words/WordsInternal.sol";
 import "../4_Chainlink_VRF/VRFInternal.sol";
 
 

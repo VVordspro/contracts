@@ -4,7 +4,7 @@ pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import "@chainlink/contracts/src/v0.8/VRFRequestIDBase.sol";
-import "../0_diamond/libraries/AppStorage.sol";
+import "../0_Diamond/libraries/AppStorage.sol";
 import "./VRFStorage.sol";
 
 abstract contract VRFInternal is VRFRequestIDBase {

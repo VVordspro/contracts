@@ -9,7 +9,7 @@ import { IERC1155Metadata, ERC1155Metadata } from './metadata/ERC1155Metadata.so
 import { ISolidStateERC1155 } from './ISolidStateERC1155.sol';
 import { IERC2981 } from '../0_Diamond/interfaces/IERC2981.sol';
 import { LibDiamond } from '../0_Diamond/libraries/LibDiamond.sol';
-// import { WordsInternal } from '../2_words/WordsInternal.sol';
+// import { WordsInternal } from '../2_Words/WordsInternal.sol';
 import { Pausable } from '@solidstate/contracts/security/Pausable.sol';
 
 
