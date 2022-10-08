@@ -31,6 +31,15 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         return ERC1155BaseStorage.layout().balances[id][account];
     }
 
+    function _isApprovedForAll(address account, address operator)
+        internal
+        view
+        virtual
+        returns (bool)
+    {
+        return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
+    }
+
     /**
      * @notice mint given quantity of tokens for given address
      * @dev ERC1155Receiver implementation is not checked
