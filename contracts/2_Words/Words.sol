@@ -104,18 +104,7 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
 
 // setting --------------------------------------------------
 
-    // function setNotification(
-    //     string calldata notification1,
-    //     string calldata notification2
-    // ) public onlyOwner {
-    //     _setNotification(notification1, notification2);
-    // }
-
     function setDefaultExternalURL(string calldata url) public onlyOwner {
         _setDefaultExternalURL(url);
-    }
-
-    function setInviteRequirement(bool inviteRequired) public onlyOwner {
-        setInviteRequirement(inviteRequired);
     }
 }
