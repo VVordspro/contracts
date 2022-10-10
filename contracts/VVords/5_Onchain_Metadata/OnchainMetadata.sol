@@ -51,7 +51,6 @@ contract OnchainMetadata is TemplateView {
 
         require(w.info.blockNumber != 0, "ERC721Metadata: URI query for nonexistent token");
 
-
         string memory doms;
         for (uint256 i; i < w.domsCount; i++){
             doms = string.concat(

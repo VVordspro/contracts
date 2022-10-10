@@ -12,7 +12,6 @@ contract Template0 {
     function image(uint256 tokenId) public view returns (string memory) {
         AppStorage.Word storage w = AppStorage.layout().words[tokenId];
 
-        require(w.info.blockNumber != 0, "ERC721Metadata: URI query for nonexistent token");
 
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(
             _template({

@@ -18,8 +18,6 @@ contract Template8 {
         AppStorage.Setting storage setting = AppStorage.layout().setting;
         AppStorage.Word storage w = AppStorage.layout().words[tokenId];
 
-        require(w.info.blockNumber != 0, "ERC721Metadata: URI query for nonexistent token");
-
         uint256 power = w.values.power;
 
         uint256 randomResult = w.info.randomResult;
