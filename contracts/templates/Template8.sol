@@ -21,7 +21,7 @@ contract Template8 {
         uint256 power = w.values.power;
 
         uint256 randomResult = w.info.randomResult;
-        return _template({
+        return _generate({
             word1 : w.word[0].validate(),
             word2 : w.word[1].validate(),
             word3 : w.word[2].validate(),
@@ -36,7 +36,7 @@ contract Template8 {
         }); 
     }
 
-    function _template(
+    function _generate(
         string memory word1,
         string memory word2,
         string memory word3,
