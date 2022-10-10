@@ -4,11 +4,13 @@ pragma solidity ^0.8.13;
 
 import "@solidstate/contracts/utils/UintUtils.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "../VVords/5_Onchain_Metadata/utils/UintToFloatString.sol";
+import "./interfaces/ITemplate.sol";
 import "./utils/SVGTextValidator.sol";
 
-contract Template8 {
+contract Template8 is ERC165 {
     using UintUtils for uint;
     using UintToFloatString for uint;
     using SVGTextValidator for string;
@@ -93,5 +95,11 @@ contract Template8 {
                 numPoints--;
             }
         }
+    }
+        
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+        return 
+            interfaceId == type(ITemplate).interfaceId ||
+            super.supportsInterface(interfaceId);
     }
 }

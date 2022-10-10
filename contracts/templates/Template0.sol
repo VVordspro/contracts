@@ -3,10 +3,12 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "./utils/SVGTextValidator.sol";
+import "./interfaces/ITemplate.sol";
 
-contract generate0 {
+contract Template0 is ERC165 {
     using SVGTextValidator for string;
 
     function image(uint256 tokenId) public view returns (string memory) {
@@ -36,5 +38,11 @@ contract generate0 {
             word3,
             '</tspan></text></svg><rect class="b f a" /></svg>'
         );
+    }
+        
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+        return 
+            interfaceId == type(ITemplate).interfaceId ||
+            super.supportsInterface(interfaceId);
     }
 }

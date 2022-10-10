@@ -16,36 +16,11 @@ contract OnchainMetadata is TemplateView {
     using UintToFloatString for uint;
     using StringUtils for *;
 
-    function changeTokenTemplate(uint256 tokenId, uint256 templateId) public {
-        AppStorage.WordInfo storage wi = AppStorage.layout().words[tokenId].info;
-        require(msg.sender == wi.author, "OnchainMetadata: access to change template denied");
-        wi.template = templateId;
+    function init() external {
+        
     }
 
-    function updateTemplate(
-        uint256 templateId,
-        address templateAddress,
-        uint256 templatePrice,
-        string calldata description,
-        uint256[] calldata charCount
-    ) public {
-        AppStorage.Template storage template = AppStorage.layout().templates[templateId];
-        require(
-            template.contAddr == address(0) || template.creator == msg.sender,
-            "OnchainMetadata: access to change template denied"
-        );
-        template.contAddr = templateAddress;
-        template.creator = msg.sender;
-        template.price = templatePrice;
-        template.description = description;
-        template.charCount = charCount;
-    }
-
-    // function uri(uint256 tokenId) public view returns(string memory) {
-    //     return tokenURI(tokenId);
-    // }
-
-    function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
+    function uri(uint256 tokenId) public view returns (string memory) {
         AppStorage.Setting storage setting = AppStorage.layout().setting;
         AppStorage.Word storage w = AppStorage.layout().words[tokenId];
 
@@ -91,5 +66,34 @@ contract OnchainMetadata is TemplateView {
                 i < sLen ? '"}, ' : '"}'
             );
         }
+    }
+
+    function changeTokenTemplate(uint256 tokenId, uint256 templateId) public {
+        AppStorage.WordInfo storage wi = AppStorage.layout().words[tokenId].info;
+        require(msg.sender == wi.author, "OnchainMetadata: access to change template denied");
+        wi.template = templateId;
+    }
+
+    function updateTemplate(
+        uint256 templateId,
+        address templateAddress,
+        uint256 templatePrice,
+        string calldata description,
+        uint256[] calldata charCount
+    ) public {
+        AppStorage.Template storage template = AppStorage.layout().templates[templateId];
+        require(
+            template.contAddr == address(0) || template.creator == msg.sender,
+            "OnchainMetadata: access to change template denied"
+        );
+        require(
+            ITemplate(templateAddress).supportsInterface(type(ITemplate).interfaceId),
+            "OnchainMetadata: the template contract does not supports standard interface"
+        );
+        template.contAddr = templateAddress;
+        template.creator = msg.sender;
+        template.price = templatePrice;
+        template.description = description;
+        template.charCount = charCount;
     }
 }
