@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../interfaces/ITemplate.sol";
+import "../../../templates/interfaces/ITemplate.sol";
 
 abstract contract TemplateView {
-    ITemplate public template = ITemplate(address(0));
 
-    function image(address templateAddress, uint256 tokenId)
+    function generateImage(address templateAddress, uint256 tokenId)
         internal
         view
         returns(string memory)

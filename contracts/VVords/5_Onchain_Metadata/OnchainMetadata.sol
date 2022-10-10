@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "./utils/UintToFloatString.sol";
 import "../2_Words/utils/StringUtils.sol";
 import "./utils/TemplateView.sol";
+import "../../templates/Template0.sol";
 
 contract OnchainMetadata is TemplateView {
     using AddressUtils for address;
@@ -17,7 +18,13 @@ contract OnchainMetadata is TemplateView {
     using StringUtils for *;
 
     function init() external {
-        
+        updateTemplate({
+            templateId : 0,
+            templateAddress : address(new Template0()),
+            templatePrice : 0,
+            description : "this is the initial public free template",
+            charCount : new uint256[](0)
+        });
     }
 
     function uri(uint256 tokenId) public view returns (string memory) {
@@ -44,7 +51,7 @@ contract OnchainMetadata is TemplateView {
               '{"name": "#', tokenId.toString(), 
             '", "description": "', doms,
             '", "external_url": "', bytes(w.info.externalURL).length>0 ? w.info.externalURL : string.concat(setting.defaultExternalURL, tokenId.toString()),
-            '", "image": "', image(templateAddress, tokenId),
+            '", "image": "', generateImage(templateAddress, tokenId),
             '", "attributes": [', attributes(tokenId),
             '], "interaction" : {"read":[],"write":[{"inputs": [{"internalType": "uint256","name": "tokenId","type": "uint256"},{"internalType": "string","name": "mention","type": "string"}],"name": "dom","outputs": [],"stateMutability": "payable","type": "function"},{"inputs": [{"internalType": "uint256","name": "tokenId","type": "uint256"}],"name": "withdrawWord","outputs": [],"stateMutability": "nonpayable","type": "function"}]}}'
             ))
@@ -78,8 +85,8 @@ contract OnchainMetadata is TemplateView {
         uint256 templateId,
         address templateAddress,
         uint256 templatePrice,
-        string calldata description,
-        uint256[] calldata charCount
+        string memory description,
+        uint256[] memory charCount
     ) public {
         AppStorage.Template storage template = AppStorage.layout().templates[templateId];
         require(
