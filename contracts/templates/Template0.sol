@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "../VVords/5_Onchain_Metadata/utils/UintToFloatString.sol";
 import "../VVords/5_Onchain_Metadata/utils/SVGTextValidator.sol";
 
-library Template0 {
+contract Template0 {
     using UintUtils for uint;
     using SVGTextValidator for string;
 
