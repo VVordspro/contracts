@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "./utils/SVGTextValidator.sol";
 
-contract Template0 {
+contract generate0 {
     using SVGTextValidator for string;
 
     function image(uint256 tokenId) public view returns (string memory) {
@@ -14,7 +14,7 @@ contract Template0 {
 
 
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(
-            _template({
+            _generate({
                 word1 : w.word[0].validate(),
                 word2 : w.word[1].validate(),
                 word3 : w.word[2].validate()
@@ -22,7 +22,7 @@ contract Template0 {
         )));
     }
 
-    function _template(
+    function _generate(
         string memory word1,
         string memory word2,
         string memory word3
