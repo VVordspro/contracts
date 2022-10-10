@@ -2,13 +2,11 @@
 
 pragma solidity ^0.8.13;
 
-import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
-import "../VVords/5_Onchain_Metadata/utils/UintToFloatString.sol";
-import "../VVords/5_Onchain_Metadata/utils/SVGTextValidator.sol";
+import "../VVords/0_Diamond/libraries/AppStorage.sol";
+import "./utils/SVGTextValidator.sol";
 
 contract Template0 {
-    using UintUtils for uint;
     using SVGTextValidator for string;
 
     function image(uint256 tokenId) public view returns (string memory) {

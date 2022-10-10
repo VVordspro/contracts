@@ -2,18 +2,16 @@
 
 pragma solidity ^0.8.13;
 
-import "../VVords/0_Diamond/libraries/AppStorage.sol";
-import '@solidstate/contracts/utils/UintUtils.sol';
+import "@solidstate/contracts/utils/UintUtils.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "../VVords/5_Onchain_Metadata/utils/UintToFloatString.sol";
-import "../VVords/5_Onchain_Metadata/utils/SVGTextValidator.sol";
-import "../VVords/2_Words/utils/StringUtils.sol";
+import "./utils/SVGTextValidator.sol";
 
 contract Template8 {
     using UintUtils for uint;
     using UintToFloatString for uint;
     using SVGTextValidator for string;
-    using StringUtils for *;
 
     function image(uint256 tokenId) external view virtual returns (string memory) {
         AppStorage.Global storage global = AppStorage.layout().global;

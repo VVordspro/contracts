@@ -7,7 +7,6 @@ import '@solidstate/contracts/utils/AddressUtils.sol';
 import '@solidstate/contracts/utils/UintUtils.sol';
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "./utils/UintToFloatString.sol";
-import "./utils/SVGTextValidator.sol";
 import "../2_Words/utils/StringUtils.sol";
 import "./utils/TemplateView.sol";
 
@@ -15,7 +14,6 @@ contract OnchainMetadata is TemplateView {
     using AddressUtils for address;
     using UintUtils for uint;
     using UintToFloatString for uint;
-    using SVGTextValidator for string;
     using StringUtils for *;
 
     function changeTokenTemplate(uint256 tokenId, uint256 templateId) public {
