@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/proxy/Proxy.sol";
 import "../../../templates/interfaces/ITemplate.sol";
 
-abstract contract TemplateView {
+abstract contract TemplateView is Proxy {
 
-    function generateImage(address templateAddress, uint256 tokenId)
+    function generateImage(uint256 tokenId)
         internal
         view
         returns(string memory)
@@ -13,7 +14,6 @@ abstract contract TemplateView {
         (bool success, bytes memory data) = address(this).staticcall(
             abi.encodeWithSelector(
                 ITemplate.image.selector,
-                templateAddress,
                 tokenId
             )
         );
@@ -22,20 +22,17 @@ abstract contract TemplateView {
         return(abi.decode(data, (string)));
     }
 
-    fallback() external {
-        if(msg.sender == address(this)){
-            (bytes4 imgSelector, address tempAddr, uint256 tokenId) = 
-            abi.decode(msg.data, (bytes4, address, uint256));
-            if(imgSelector == ITemplate.image.selector) {
-                (bool success, bytes memory data) = 
-                address(tempAddr).delegatecall(abi.encodeWithSelector(imgSelector, tokenId));
-                assembly {
-                    switch success
-                        // delegatecall returns 0 on error.
-                        case 0 { revert(add(data, 32), returndatasize()) }
-                        default { return(add(data, 32), returndatasize()) }
-                }
-            }
-        }
+    function _beforeFallback() internal view override {
+        require(
+            msg.sender == address(this),
+            "TemplateView: fallback is forbidden for external call."
+        );
+        (bytes4 imgSelector, ) = 
+            abi.decode(msg.data, (bytes4, uint256));
+
+        require(
+            imgSelector == ITemplate.image.selector,
+            "only image() view function  is allowed"
+        );
     }
 }
