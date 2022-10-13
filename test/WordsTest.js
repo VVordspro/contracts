@@ -92,14 +92,44 @@ describe('DiamondTest', async function () {
     assert.sameMembers(result, selectors)
   })
 
-  it('should test function call', async () => {
+  it('should test ERC1155 function call', async () => {
     const ERC1155 = await ethers.getContractAt('ERC1155SolidState', diamondAddress)
     await ERC1155.paused()
   })
 
+  it('should add words functions', async () => {
+    const Words = await ethers.getContractFactory('Words')
+    const words = await Words.deploy()
+    await words.deployed()
+    addresses.push(words.address)
+    const selectors = getSelectors(words).remove([
+      'init()'
+    ])
+    tx = await diamondCutFacet.diamondCut(
+      [{
+        facetAddress: words.address,
+        action: FacetCutAction.Add,
+        functionSelectors: selectors
+      }],
+      words.address, 
+      words.interface.encodeFunctionData('init')
+    )
+    receipt = await tx.wait()
+    if (!receipt.status) {
+      throw Error(`Diamond upgrade failed: ${tx.hash}`)
+    }
+    result = await diamondLoupeFacet.facetFunctionSelectors(words.address)
+    assert.sameMembers(result, selectors)
+  })
+
+  it('should test words function call', async () => {
+    const words = await ethers.getContractAt('Words', diamondAddress)
+    await words.nextTokenId()
+  })
+
   // it('should replace supportsInterface function', async () => {
-  //   const ERC1155SolidState = await ethers.getContractFactory('ERC1155SolidState')
-  //   const selectors = getSelectors(ERC1155SolidState).get(['supportsInterface(bytes4)'])
+  //   const Words = await ethers.getContractFactory('Words')
+  //   const selectors = getSelectors(Words).get(['supportsInterface(bytes4)'])
   //   const testFacetAddress = addresses[3]
   //   tx = await diamondCutFacet.diamondCut(
   //     [{
@@ -113,7 +143,7 @@ describe('DiamondTest', async function () {
   //     throw Error(`Diamond upgrade failed: ${tx.hash}`)
   //   }
   //   result = await diamondLoupeFacet.facetFunctionSelectors(testFacetAddress)
-  //   assert.sameMembers(result, getSelectors(ERC1155SolidState))
+  //   assert.sameMembers(result, getSelectors(Words))
   // })
 
   // it('should add test2 functions', async () => {
@@ -157,7 +187,7 @@ describe('DiamondTest', async function () {
   // })
 
   // it('should remove some test1 functions', async () => {
-  //   const ERC1155 = await ethers.getContractAt('ERC1155SolidState', diamondAddress)
+  //   const ERC1155 = await ethers.getContractAt('Words', diamondAddress)
   //   const functionsToKeep = ['test1Func2()', 'test1Func11()', 'test1Func12()']
   //   const selectors = getSelectors(ERC1155).remove(functionsToKeep)
   //   tx = await diamondCutFacet.diamondCut(
@@ -203,7 +233,7 @@ describe('DiamondTest', async function () {
 
   // it('add most functions and facets', async () => {
   //   const diamondLoupeFacetSelectors = getSelectors(diamondLoupeFacet).remove(['supportsInterface(bytes4)'])
-  //   const ERC1155SolidState = await ethers.getContractFactory('ERC1155SolidState')
+  //   const Words = await ethers.getContractFactory('Words')
   //   const Test2Facet = await ethers.getContractFactory('Test2Facet')
   //   // Any number of functions from any number of facets can be added/replaced/removed in a
   //   // single transaction
@@ -221,7 +251,7 @@ describe('DiamondTest', async function () {
   //     {
   //       facetAddress: addresses[3],
   //       action: FacetCutAction.Add,
-  //       functionSelectors: getSelectors(ERC1155SolidState)
+  //       functionSelectors: getSelectors(Words)
   //     },
   //     {
   //       facetAddress: addresses[4],

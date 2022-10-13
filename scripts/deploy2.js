@@ -7,7 +7,7 @@ const {
       
   const { assert } = require('chai')
   
-  async function deployERC1155SolidState () { 
+  async function deployWords () { 
   
     const diamondAddress = "0x92Ef5499cE50B6fA356843C842643F2Ab65D8e30" //deploy3 diamond on polygon
     let  diamondCut = await ethers.getContractAt('DiamondCutFacet', diamondAddress)
@@ -17,8 +17,8 @@ const {
   
     // deploy facet
     console.log('')
-    console.log('Deploying ERC1155SolidState')
-    const FacetName = "ERC1155SolidState"
+    console.log('Deploying Words')
+    const FacetName = "Words"
     const cut = []
     const Facet = await ethers.getContractFactory(FacetName)
     const facet = await Facet.deploy()
@@ -27,9 +27,7 @@ const {
     cut.push({
       facetAddress: facet.address,
       action: FacetCutAction.Add,
-      functionSelectors: getSelectors(facet).remove([
-        'init()', 'uri(uint256)', 'supportsInterface(bytes4)'
-      ])
+      functionSelectors: getSelectors(facet).remove(['init()'])
     })
   
     // upgrade diamond with facet
@@ -45,7 +43,7 @@ const {
   // We recommend this pattern to be able to use async/await everywhere
   // and properly handle errors.
   if (require.main === module) {
-    deployERC1155SolidState()
+    deployWords()
       .then(() => process.exit(0))
       .catch(error => {
         console.error(error)
@@ -53,4 +51,4 @@ const {
       })
   }
   
-  exports.deployERC1155SolidState = deployERC1155SolidState
+  exports.deployWords = deployWords

@@ -21,18 +21,12 @@ abstract contract WordsInternal is PowerInternal {
     );
 
     function __wordsInternal_init() internal {
-        // _setMinInitialValue(10 ** 18);
-        // _setMinDomValue(10 ** 17);
-        // _setWithdrawableValueFraction(8000); //denominator is 10,000
-        // _setVotingPowerFraction(2000); //denominator is 10,000
-        // _setTimeToFullVotingPower(30 days);
-        // _initBlockNumber(block.number);
-
-        // AppStorage.Word storage t = AppStorage.layout().words[9];
-        // uint256 falsePower = t.power;
-        // uint256 newPower = _powerCalculator(t.value);
-        // t.initialPower = newPower;
-        // t.power = newPower;
+        _setMinInitialValue(10 ** 18);
+        _setMinDomValue(10 ** 17);
+        _setWithdrawableValueFraction(8000); //denominator is 10,000
+        _setVotingPowerFraction(2000); //denominator is 10,000
+        _setTimeToFullVotingPower(30 days);
+        _initBlockNumber(block.number);
     }
 
     function _inviteRequired() internal view returns(bool) {
