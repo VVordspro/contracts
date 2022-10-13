@@ -10,6 +10,8 @@ library ERC1155MetadataStorage {
         keccak256('solidstate.contracts.storage.ERC1155Metadata');
 
     struct Layout {
+        string name;
+        string symbol;
         string baseURI;
         mapping(uint256 => string) tokenURIs;
     }

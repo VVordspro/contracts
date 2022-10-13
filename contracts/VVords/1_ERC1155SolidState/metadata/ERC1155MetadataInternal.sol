@@ -9,6 +9,14 @@ import { ERC1155MetadataStorage } from './ERC1155MetadataStorage.sol';
  * @title ERC1155Metadata internal functions
  */
 abstract contract ERC1155MetadataInternal is IERC1155MetadataInternal {
+    
+    function _setName(string memory _name) internal virtual {
+        ERC1155MetadataStorage.layout().name = _name;
+    }
+
+    function _setSymbol(string memory _symbol) internal virtual {
+        ERC1155MetadataStorage.layout().symbol = _symbol;
+    }
     /**
      * @notice set base metadata URI
      * @dev base URI is a non-standard feature adapted from the ERC721 specification

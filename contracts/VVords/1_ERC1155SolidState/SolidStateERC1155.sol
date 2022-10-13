@@ -26,8 +26,8 @@ contract ERC1155SolidState is
     // WordsInternal
 {
     function init() external {
-        // _setName("VVords");
-        // _setSymbol("VV");
+        _setName("VVords");
+        _setSymbol("VV");
 
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         ds.supportedInterfaces[type(IERC1155).interfaceId] = true;
