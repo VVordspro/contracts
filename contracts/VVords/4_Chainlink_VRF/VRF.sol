@@ -21,7 +21,7 @@ contract VRF is VRFInternal, Swapper {
 
     function init() external {
         //initial swap
-        swap_MATIC_LINK677(vrfFee, 10 ** 17);
+        swap_MATIC_LINK677(_vrfFee, 10 ** 17);
     }
 
     function linkBalance() public view returns(uint256) {
@@ -37,5 +37,9 @@ contract VRF is VRFInternal, Swapper {
 
         AppStorage.Word storage word = AppStorage.layout().words[_tokenId(requestId)];
         swap_MATIC_LINK677(word.values.initialValue / 10);
+    }
+
+    function vrfFee() public pure returns(uint256) {
+        return _vrfFee;
     }
 }    

@@ -21,11 +21,6 @@ abstract contract WordsInternal is PowerInternal {
     );
 
     function __wordsInternal_init() internal {
-        _setMinInitialValue(10 ** 18);
-        _setMinDomValue(10 ** 17);
-        _setWithdrawableValueFraction(8000); //denominator is 10,000
-        _setVotingPowerFraction(2000); //denominator is 10,000
-        _setTimeToFullVotingPower(30 days);
         _initBlockNumber(block.number);
     }
 

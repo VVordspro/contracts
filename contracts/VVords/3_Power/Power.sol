@@ -15,6 +15,12 @@ contract Power is ERC1155EnumerableInternal, PowerInternal, VRFInternal {
         _;
     }
 
+
+    function init() public {
+        __powerInternal_init();
+    }
+
+
     function dom(
         uint256 tokenId,
         string calldata mention

@@ -80,18 +80,6 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
         }
     }
 
-    function dom(
-        uint256 tokenId,
-        string calldata mention
-    ) public payable {
-        _dom(
-            tokenId,
-            _authorOf(tokenId),
-            msg.value,
-            mention
-        );
-    }
-
     function setVarStr(
         uint256 tokenId,
         string calldata key,

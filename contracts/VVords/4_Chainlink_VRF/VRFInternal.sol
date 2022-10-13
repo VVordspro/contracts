@@ -13,7 +13,7 @@ abstract contract VRFInternal is VRFRequestIDBase {
     address constant vrfCoordinator = 0x3d2341ADb2D31f1c5530cDC622016af293177AE0; // on polygon mainnet
     LinkTokenInterface constant LINK = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1); // on polygon mainnet
     bytes32 constant keyHash = 0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da;
-    uint256 constant public vrfFee = 0.0001 * 10 ** 18; // 0.0001 LINK (Varies by network)
+    uint256 constant _vrfFee = 0.0001 * 10 ** 18; // 0.0001 LINK (Varies by network)
     
     event NewRandomResult(uint256 tokenId, uint256 randomness);
 
@@ -24,7 +24,7 @@ abstract contract VRFInternal is VRFRequestIDBase {
     function requestRandomness(uint256 tokenId) internal {
         VRFStorage.Layout storage vrf = VRFStorage.layout();
 
-        LINK.transferAndCall(vrfCoordinator, vrfFee, abi.encode(keyHash, USER_SEED_PLACEHOLDER));
+        LINK.transferAndCall(vrfCoordinator, _vrfFee, abi.encode(keyHash, USER_SEED_PLACEHOLDER));
         uint256 vRFSeed = makeVRFInputSeed(
             keyHash, 
             USER_SEED_PLACEHOLDER, 
