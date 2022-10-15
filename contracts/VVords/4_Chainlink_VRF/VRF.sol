@@ -21,7 +21,7 @@ contract VRF is VRFInternal, Swapper {
 
     function init() external {
         //initial swap
-        swap_MATIC_LINK677(_vrfFee, 10 ** 17);
+        // swap_MATIC_LINK677(_vrfFee, 10 ** 17);
     }
 
     function linkBalance() public view returns(uint256) {
