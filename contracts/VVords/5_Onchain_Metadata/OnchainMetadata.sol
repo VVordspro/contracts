@@ -75,13 +75,13 @@ contract OnchainMetadata is TemplateView {
 
     function _implementation() internal view override returns (address) {
         (,uint256 tokenId) = abi.decode(msg.data, (bytes4, uint256));
-        return AppStorage.layout().templates[AppStorage.layout().words[tokenId].info.template].contAddr;
+        return AppStorage.layout().templates[AppStorage.layout().words[tokenId].info.templateId].contAddr;
     }
 
     function changeTokenTemplate(uint256 tokenId, uint256 templateId) public {
         AppStorage.WordInfo storage wi = AppStorage.layout().words[tokenId].info;
         require(msg.sender == wi.author, "OnchainMetadata: access to change template denied");
-        wi.template = templateId;
+        wi.templateId = templateId;
     }
 
     function updateTemplate(

@@ -49,10 +49,11 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
         return _nextTokenId();
     }
 
-    function mintVVord1155(
+    function mintVVord(
         string[] calldata word, 
         string calldata tags,
         string calldata externalURL,
+        uint256 templateId,
         address to
     ) public payable {
         uint256 paidAmount = msg.value;
@@ -63,9 +64,10 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
         
         _safeMint(to, tokenId, power, "");
 
-        _newWord(word, tags, externalURL, to, tokenId, paidAmount, power);
-
-        requestRandomness(tokenId);
+        _setTokenInfo(word, tags, externalURL, templateId, tokenId);
+        _setTokenValues(tokenId, to, paidAmount, power);
+        
+        // requestRandomness(tokenId);
     }
 
     function burnVVord(address account, uint256 id, uint256 amount) public {

@@ -66,7 +66,7 @@ library AppStorage {
         address author;
         uint256 blockNumber;
         uint256 randomResult;
-        uint256 template;
+        uint256 templateId;
     }
 
     struct WordValues{

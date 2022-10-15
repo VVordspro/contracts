@@ -13,7 +13,7 @@ abstract contract TemplateView is Proxy {
     {
         (bool success, bytes memory data) = address(this).staticcall(
             abi.encodeWithSelector(
-                ITemplate.image.selector,
+                ITemplate.renderImage.selector,
                 tokenId
             )
         );
@@ -31,7 +31,7 @@ abstract contract TemplateView is Proxy {
             abi.decode(msg.data, (bytes4, uint256));
 
         require(
-            imgSelector == ITemplate.image.selector,
+            imgSelector == ITemplate.renderImage.selector,
             "only image() view function  is allowed"
         );
     }

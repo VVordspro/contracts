@@ -18,7 +18,9 @@ describe('DiamondTest', async function () {
   let ownershipFacet
   let tx
   let receipt
-  let result
+  let result    
+  let zero_address
+  let deployer, user1, user2
   const addresses = []
 
   before(async function () {
@@ -26,6 +28,10 @@ describe('DiamondTest', async function () {
     diamondCutFacet = await ethers.getContractAt('DiamondCutFacet', diamondAddress)
     diamondLoupeFacet = await ethers.getContractAt('DiamondLoupeFacet', diamondAddress)
     ownershipFacet = await ethers.getContractAt('OwnershipFacet', diamondAddress)
+
+    zero_address = "0x0000000000000000000000000000000000000000"
+    const accounts = await ethers.getSigners();
+    [deployer, user1, user2] = accounts
   })
 
   it('should have three facets -- call to facetAddresses function', async () => {
@@ -156,6 +162,44 @@ describe('DiamondTest', async function () {
     const power = await ethers.getContractAt('Power', diamondAddress)
     await power.totalPower()
   })
+
+  it('should mint a new vvord', async () => {
+    const words = await ethers.getContractAt('Words', diamondAddress)
+    await words.mintVVord(
+      ["first line", "second line", "third line"],
+      "test tags",
+      "test url",
+      0,
+      deployer.address
+    )
+
+    
+  })
+
+  // it('should add onchainMetadata functions', async () => {
+  //   const OnchainMetadata = await ethers.getContractFactory('OnchainMetadata')
+  //   const onchainMetadata = await OnchainMetadata.deploy()
+  //   await onchainMetadata.deployed()
+  //   addresses.push(onchainMetadata.address)
+  //   const selectors = getSelectors(onchainMetadata).remove([
+  //     'init()'
+  //   ])
+  //   tx = await diamondCutFacet.diamondCut(
+  //     [{
+  //       facetAddress: onchainMetadata.address,
+  //       action: FacetCutAction.Add,
+  //       functionSelectors: selectors
+  //     }],
+  //     onchainMetadata.address, 
+  //     onchainMetadata.interface.encodeFunctionData('init')
+  //   )
+  //   receipt = await tx.wait()
+  //   if (!receipt.status) {
+  //     throw Error(`Diamond upgrade failed: ${tx.hash}`)
+  //   }
+  //   result = await diamondLoupeFacet.facetFunctionSelectors(onchainMetadata.address)
+  //   assert.sameMembers(result, selectors)
+  // })
 
   // it('should replace supportsInterface function', async () => {
   //   const Words = await ethers.getContractFactory('Words')

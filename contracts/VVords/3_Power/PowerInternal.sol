@@ -41,7 +41,40 @@ abstract contract PowerInternal {
         _setVotingPowerFraction(2000); //denominator is 10,000
         _setTimeToFullVotingPower(30 days);
     }
+   
+    
+    function _setTokenValues(
+        uint256 id,
+        address userAddr,
+        uint256 value,
+        uint256 power
+    ) internal {
+        AppStorage.Global storage global = AppStorage.layout().global;
+        AppStorage.Word storage w = AppStorage.layout().words[id];
 
+        // (uint256 min, uint256 max) = _allowedValueRange();
+        // require(
+        //     value >= min,
+        //     "WordsInternal: minimum value error."
+        // );
+        // require(
+        //     w.values.value <= max,
+        //     "WordsInternal: maximum value error."
+        // );
+
+
+        w.values.initialValue = value;
+        w.values.initialPower = power;
+        w.values.value = value;
+        w.values.power = power;
+
+        _increaseUserPower(userAddr, power);
+        _increaseTotalPower(power);
+        _increaseTotalValue(value);
+
+
+        emit UpdateValue(id, value, power, global.totalValue, global.totalPower);
+    }
 
     function _dom(
         uint256 id,
@@ -178,9 +211,9 @@ abstract contract PowerInternal {
         // }
         // power = value / divisor * 100;
 
-        power = value * 8/10 *
-            AppStorage.layout().global.totalPower /
-            address(this).balance;
+        // power = value * 8/10 *
+        //     AppStorage.layout().global.totalPower /
+        //     address(this).balance;
             
     }
 

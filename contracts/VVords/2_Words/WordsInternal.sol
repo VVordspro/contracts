@@ -55,14 +55,12 @@ abstract contract WordsInternal is PowerInternal {
         return AppStorage.layout().words[tokenId].info.author;
     }    
     
-    function _newWord(
+    function _setTokenInfo(
         string[] calldata word,
         string calldata tags,
         string calldata externalURL,
-        address author,
-        uint256 id,
-        uint256 value,
-        uint256 power
+        uint256 templateId,
+        uint256 id
     ) internal {
         AppStorage.Global storage global = AppStorage.layout().global;
         AppStorage.Word storage w = AppStorage.layout().words[id];
@@ -77,36 +75,28 @@ abstract contract WordsInternal is PowerInternal {
             "WordsInternal: word lines overflow."
         );
 
-        (uint256 min, uint256 max) = _allowedValueRange();
-        require(
-            value >= min,
-            "WordsInternal: minimum value error."
-        );
-        require(
-            w.values.value <= max,
-            "WordsInternal: maximum value error."
-        );
+        // (uint256 min, uint256 max) = _allowedValueRange();
+        // require(
+        //     value >= min,
+        //     "WordsInternal: minimum value error."
+        // );
+        // require(
+        //     w.values.value <= max,
+        //     "WordsInternal: maximum value error."
+        // );
 
-        address userAddr = msg.sender;
+        address author = msg.sender;
 
         w.word = word;
         w.info.tags = tags;
         w.info.externalURL = externalURL;
         w.info.author = author;
         w.info.blockNumber = block.number - global.initialBlock;
-        w.values.initialValue = value;
-        w.values.initialPower = power;
-        w.values.value = value;
-        w.values.power = power;
-
-        _increaseUserPower(userAddr, power);
-        _increaseTotalPower(power);
-        _increaseTotalValue(value);
+        w.info.templateId = templateId;
 
         _registerWord(word, id);
 
         emit NewWord(id, author);
-        emit UpdateValue(id, value, power, global.totalValue, global.totalPower);
     }
 
     function _takeBackWord(uint256 tokenId, address valueReceiver) internal {

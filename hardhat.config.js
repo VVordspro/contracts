@@ -7,7 +7,7 @@ const { ACCOUNT_1, ALCHEMY_API_KEY, POLYGONSCAN_API_KEY, ETHERSCAN_API_KEY, SNOW
 
 module.exports = {
   solidity: {
-    version: "0.8.17",
+    version: "0.8.15",
     settings: {
       viaIR: true,
       optimizer: {
@@ -33,8 +33,8 @@ module.exports = {
       url: `https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
       accounts: [`0x${ACCOUNT_1}`],
     },
-    kovan: {
-      url: `https://eth-kovan.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+    goerli: {
+      url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
       accounts: [`0x${ACCOUNT_1}`],
     },
     avalancheFujiTestnet: {
