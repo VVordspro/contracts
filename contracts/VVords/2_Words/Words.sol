@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "../0_Diamond/libraries/LibDiamond.sol";
 import "../1_ERC1155SolidState/enumerable/ERC1155EnumerableInternal.sol";
+import "../../templates/libraries/TemplateView.sol";
 import "./WordsInternal.sol";
 import "../4_Chainlink_VRF/VRFInternal.sol";
 
@@ -16,6 +17,7 @@ import "../4_Chainlink_VRF/VRFInternal.sol";
  */
 
 contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
+    using TemplateView for uint256;
 
     modifier onlyOwner() {
         LibDiamond.enforceIsContractOwner();
@@ -68,6 +70,8 @@ contract Words is ERC1155EnumerableInternal, WordsInternal, VRFInternal {
         _setTokenValues(tokenId, to, paidAmount, power);
         
         // requestRandomness(tokenId);
+
+        templateId.checkIfRenderable(word);
     }
 
     function burnVVord(address account, uint256 id, uint256 amount) public {

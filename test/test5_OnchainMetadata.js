@@ -202,14 +202,14 @@ describe('DiamondTest', async function () {
     )
   })
 
-  it('should return token 0 template address', async () => {
-    const metadata = await ethers.getContractAt('OnchainMetadata', diamondAddress)
-    console.log(await metadata.tokenTemplateAddress(0))
-  })
+  // it('should return token 0 template address', async () => {
+  //   const metadata = await ethers.getContractAt('OnchainMetadata', diamondAddress)
+  //   console.log(await metadata.tokenTemplateAddress(0))
+  // })
 
-  it('should return uri of token number 0', async () => {
-    const metadata = await ethers.getContractAt('OnchainMetadata', diamondAddress)
-    console.log(await metadata.uri(0))
-  })
+  // it('should return uri of token number 0', async () => {
+  //   const metadata = await ethers.getContractAt('OnchainMetadata', diamondAddress)
+  //   console.log(await metadata.uri(0))
+  // })
 
 })

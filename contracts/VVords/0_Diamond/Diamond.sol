@@ -10,9 +10,9 @@ pragma solidity ^0.8.0;
 
 import { LibDiamond } from "./libraries/LibDiamond.sol";
 import { IDiamondCut } from "./interfaces/IDiamondCut.sol";
-import { TemplateView } from "./utils/TemplateView.sol";
+import { TemplateView } from "../../templates/libraries/TemplateView.sol";
 
-contract VVords is TemplateView {    
+contract VVords {    
 
     constructor(address _contractOwner, address _diamondCutFacet) payable {        
         LibDiamond.setContractOwner(_contractOwner);
@@ -41,7 +41,7 @@ contract VVords is TemplateView {
         // get facet from function selector
         address facet;
         if(msg.sender == address(this)) {
-            facet = _templateAddress();
+            facet = TemplateView.templateAddress();
         } else {
             facet = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
         }

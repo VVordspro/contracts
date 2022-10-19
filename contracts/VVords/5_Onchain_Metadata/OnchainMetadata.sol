@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "../0_Diamond/libraries/LibDiamond.sol";
 import "../0_Diamond/libraries/AppStorage.sol";
+import "../../templates/libraries/TemplateView.sol";
 import '@solidstate/contracts/utils/AddressUtils.sol';
 import '@solidstate/contracts/utils/UintUtils.sol';
 import "@openzeppelin/contracts/utils/Base64.sol";
@@ -14,6 +15,7 @@ contract OnchainMetadata {
     using AddressUtils for address;
     using UintUtils for uint;
     using UintToFloatString for uint;
+    using TemplateView for uint256;
     using StringUtils for *;
 
     function init() external {
@@ -48,7 +50,7 @@ contract OnchainMetadata {
               '{"name": "#', tokenId.toString(), 
             '", "description": "', doms,
             '", "external_url": "', bytes(w.info.externalURL).length>0 ? w.info.externalURL : string.concat(setting.defaultExternalURL, tokenId.toString()),
-            '", "image": "', generateImage(tokenId),
+            '", "image": "', tokenId.renderImage(),
             '", "attributes": [', attributes(tokenId),
             '], "interaction" : {"read":[],"write":[{"inputs": [{"internalType": "uint256","name": "tokenId","type": "uint256"},{"internalType": "string","name": "mention","type": "string"}],"name": "dom","outputs": [],"stateMutability": "payable","type": "function"},{"inputs": [{"internalType": "uint256","name": "tokenId","type": "uint256"}],"name": "withdrawWord","outputs": [],"stateMutability": "nonpayable","type": "function"}]}}'
             ))
@@ -103,21 +105,5 @@ contract OnchainMetadata {
         template.price = templatePrice;
         template.description = description;
         template.charCount = charCount;
-    }
-
-    function generateImage(uint256 tokenId)
-        internal
-        view
-        returns(string memory)
-    {
-        (bool success, bytes memory data) = address(this).staticcall(
-            abi.encodeWithSelector(
-                ITemplate.renderImage.selector,
-                tokenId
-            )
-        );
-
-        require(success, "unable to generate the template");
-        return(abi.decode(data, (string)));
     }
 }
