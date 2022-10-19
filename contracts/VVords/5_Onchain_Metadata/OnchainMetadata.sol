@@ -8,10 +8,9 @@ import '@solidstate/contracts/utils/UintUtils.sol';
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "./utils/UintToFloatString.sol";
 import "../2_Words/utils/StringUtils.sol";
-import "./utils/TemplateView.sol";
 import "../../templates/Template0.sol";
 
-contract OnchainMetadata is TemplateView {
+contract OnchainMetadata {
     using AddressUtils for address;
     using UintUtils for uint;
     using UintToFloatString for uint;
@@ -73,8 +72,7 @@ contract OnchainMetadata is TemplateView {
         }
     }
 
-    function _implementation() internal view override returns (address) {
-        (,uint256 tokenId) = abi.decode(msg.data, (bytes4, uint256));
+    function tokenTemplateAddress(uint256 tokenId) public view returns(address) {
         return AppStorage.layout().templates[AppStorage.layout().words[tokenId].info.templateId].contAddr;
     }
 
@@ -105,5 +103,21 @@ contract OnchainMetadata is TemplateView {
         template.price = templatePrice;
         template.description = description;
         template.charCount = charCount;
+    }
+
+    function generateImage(uint256 tokenId)
+        internal
+        view
+        returns(string memory)
+    {
+        (bool success, bytes memory data) = address(this).staticcall(
+            abi.encodeWithSelector(
+                ITemplate.renderImage.selector,
+                tokenId
+            )
+        );
+
+        require(success, "unable to generate the template");
+        return(abi.decode(data, (string)));
     }
 }

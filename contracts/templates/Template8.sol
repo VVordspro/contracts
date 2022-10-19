@@ -8,12 +8,27 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "../VVords/5_Onchain_Metadata/utils/UintToFloatString.sol";
 import "./interfaces/ITemplate.sol";
+import "./utils/UTF8HoldingSpace.sol";
 import "./utils/SVGTextValidator.sol";
 
-contract Template8 is ERC165 {
+abstract contract Template8 is ERC165, ITemplate {
     using UintUtils for uint;
     using UintToFloatString for uint;
+    using UTF8HoldingSpace for *;
     using SVGTextValidator for string;
+
+    function checkIfRenderable(uint256 tokenId, string[] calldata word) external pure {
+
+        require(
+            word.length <= 3,
+            "WordsInternal: only three lines permited for this template."
+        );
+        
+        require(
+            word[0].checkLine(33) && word[1].checkLine(33) && word[2].checkLine(66),
+            "WordsInternal: word lines overflow."
+        );
+    }
 
     function image(uint256 tokenId) external view virtual returns (string memory) {
         AppStorage.Global storage global = AppStorage.layout().global;
@@ -97,7 +112,13 @@ contract Template8 is ERC165 {
         }
     }
         
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+    function supportsInterface(bytes4 interfaceId) 
+        public 
+        view 
+        virtual 
+        override(ERC165, IERC165)
+        returns (bool) 
+    {
         return 
             interfaceId == type(ITemplate).interfaceId ||
             super.supportsInterface(interfaceId);

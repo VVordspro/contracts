@@ -44,13 +44,13 @@ abstract contract PowerInternal {
    
     
     function _setTokenValues(
-        uint256 id,
+        uint256 tokenId,
         address userAddr,
         uint256 value,
         uint256 power
     ) internal {
         AppStorage.Global storage global = AppStorage.layout().global;
-        AppStorage.Word storage w = AppStorage.layout().words[id];
+        AppStorage.Word storage w = AppStorage.layout().words[tokenId];
 
         // (uint256 min, uint256 max) = _allowedValueRange();
         // require(
@@ -73,18 +73,18 @@ abstract contract PowerInternal {
         _increaseTotalValue(value);
 
 
-        emit UpdateValue(id, value, power, global.totalValue, global.totalPower);
+        emit UpdateValue(tokenId, value, power, global.totalValue, global.totalPower);
     }
 
     function _dom(
-        uint256 id,
+        uint256 tokenId,
         address tokenOwner,
         uint256 value,
         string calldata mention
     ) internal {
         AppStorage.Global storage global = AppStorage.layout().global;
         AppStorage.Setting storage setting = AppStorage.layout().setting;
-        AppStorage.Word storage word = AppStorage.layout().words[id];
+        AppStorage.Word storage word = AppStorage.layout().words[tokenId];
 
         require(
             value >= setting.minDomValue,
@@ -102,19 +102,19 @@ abstract contract PowerInternal {
         _increaseTotalValue(value);
 
         emit UpdateValue(
-            id, 
+            tokenId, 
             word.values.value, 
             word.values.power, 
             global.totalValue, 
             global.totalPower
         );
 
-        emit Dom(id, msg.sender, _userPower(msg.sender), int(value), 0, mention);
+        emit Dom(tokenId, msg.sender, _userPower(msg.sender), int(value), 0, mention);
     }
+
 
 ////////// power ///////////
     
-
     function _powerDetails(address userAddr) internal view returns(
         uint256 stakingTime,
         uint256 userLastTransferTimestamp,

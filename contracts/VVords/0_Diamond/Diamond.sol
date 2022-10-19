@@ -10,8 +10,9 @@ pragma solidity ^0.8.0;
 
 import { LibDiamond } from "./libraries/LibDiamond.sol";
 import { IDiamondCut } from "./interfaces/IDiamondCut.sol";
+import { TemplateView } from "./utils/TemplateView.sol";
 
-contract VVords {    
+contract VVords is TemplateView {    
 
     constructor(address _contractOwner, address _diamondCutFacet) payable {        
         LibDiamond.setContractOwner(_contractOwner);
@@ -38,7 +39,12 @@ contract VVords {
             ds.slot := position
         }
         // get facet from function selector
-        address facet = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
+        address facet;
+        if(msg.sender == address(this)) {
+            facet = _templateAddress();
+        } else {
+            facet = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
+        }
         require(facet != address(0), "Diamond: Function does not exist");
         // Execute external function from facet using delegatecall and return any value.
         assembly {

@@ -8,10 +8,12 @@ import "../VVords/0_Diamond/libraries/AppStorage.sol";
 import "./utils/SVGTextValidator.sol";
 import "./interfaces/ITemplate.sol";
 
-contract Template0 is ERC165 {
+contract Template0 is ERC165, ITemplate {
     using SVGTextValidator for string;
 
-    function image(uint256 tokenId) public view returns (string memory) {
+    function checkIfRenderable(uint256 tokenId, string[] calldata word) public view {}
+
+    function renderImage(uint256 tokenId) public view returns (string memory) {
         AppStorage.Word storage w = AppStorage.layout().words[tokenId];
 
 
@@ -40,7 +42,13 @@ contract Template0 is ERC165 {
         );
     }
         
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+    function supportsInterface(bytes4 interfaceId) 
+        public 
+        view 
+        virtual 
+        override(ERC165, IERC165)
+        returns (bool) 
+    {
         return 
             interfaceId == type(ITemplate).interfaceId ||
             super.supportsInterface(interfaceId);

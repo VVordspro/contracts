@@ -4,14 +4,13 @@ pragma solidity ^0.8.13;
 
 import "../0_Diamond/libraries/AppStorage.sol";
 import "../3_Power/PowerInternal.sol";
-import "./utils/UTF8HoldingSpace.sol";
 import "./utils/StringUtils.sol";
 import '@solidstate/contracts/utils/UintUtils.sol';
+import "../../templates/interfaces/ITemplate.sol";
 
 abstract contract WordsInternal is PowerInternal {
     using AppStorage for AppStorage.Layout;
     using AppStorage for AppStorage.Word;
-    using UTF8HoldingSpace for *;
     using UintUtils for uint;
     using StringUtils for *;
 
@@ -60,30 +59,12 @@ abstract contract WordsInternal is PowerInternal {
         string calldata tags,
         string calldata externalURL,
         uint256 templateId,
-        uint256 id
+        uint256 tokenId
     ) internal {
         AppStorage.Global storage global = AppStorage.layout().global;
-        AppStorage.Word storage w = AppStorage.layout().words[id];
+        AppStorage.Word storage w = AppStorage.layout().words[tokenId];
+        AppStorage.Template storage t = AppStorage.layout().templates[templateId];
 
-        require(
-            word.length <= 3,
-            "WordsInternal: only three lines permited for this template."
-        );
-        
-        require(
-            word[0].checkLine(33) && word[1].checkLine(33) && word[2].checkLine(66),
-            "WordsInternal: word lines overflow."
-        );
-
-        // (uint256 min, uint256 max) = _allowedValueRange();
-        // require(
-        //     value >= min,
-        //     "WordsInternal: minimum value error."
-        // );
-        // require(
-        //     w.values.value <= max,
-        //     "WordsInternal: maximum value error."
-        // );
 
         address author = msg.sender;
 
@@ -92,11 +73,13 @@ abstract contract WordsInternal is PowerInternal {
         w.info.externalURL = externalURL;
         w.info.author = author;
         w.info.blockNumber = block.number - global.initialBlock;
+
+        _registerWord(word, tokenId);
+
+        ITemplate(t.contAddr).checkIfRenderable(tokenId, word);
         w.info.templateId = templateId;
 
-        _registerWord(word, id);
-
-        emit NewWord(id, author);
+        emit NewWord(tokenId, author);
     }
 
     function _takeBackWord(uint256 tokenId, address valueReceiver) internal {
